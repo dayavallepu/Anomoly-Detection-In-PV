@@ -1,0 +1,160 @@
+<!-- history.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solar Panel Fault Detection - History</title>
+    <style>
+        /* Similar enhanced CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 30px;
+        }
+
+        .nav a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .nav a:hover {
+            color: #ffd700;
+        }
+
+        .history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .history-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .history-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .history-timestamp {
+            font-weight: bold;
+        }
+
+        .history-count {
+            color: #ffd700;
+        }
+
+        .history-details {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        .detection-subitem {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 5px;
+        }
+
+        .no-history {
+            text-align: center;
+            color: #ccc;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>📜 Detection History</h1>
+        <div class="nav">
+            <a href="/">Home</a>
+            <a href="/live_detection">Live Detection</a>
+            <a href="/logout">Logout</a>
+        </div>
+        <div class="history-list">
+            {% if history %}
+            {% for item in history %}
+            <div class="history-item" onclick="toggleDetails(this)">
+                <div class="history-header">
+                    <span class="history-timestamp">{{ item.timestamp }}</span>
+                    <span class="history-count">Total Detections: {{ item.total_detections }}</span>
+                </div>
+                <div class="history-details">
+                    {% for det in item.detections %}
+                    <div class="detection-subitem">
+                        <p><strong>Timestamp:</strong> {{ det.timestamp }}</p>
+                        <ul>
+                            {% for d in det.detections %}
+                            <li>{{ d.class }} - Confidence: {{ (d.confidence * 100) | round(2) }}%</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <p class="no-history">No detection history yet...</p>
+            {% endif %}
+        </div>
+    </div>
+    <script>
+        function toggleDetails(element) {
+            const details = element.querySelector('.history-details');
+            details.style.display = details.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Solar Panel Fault Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #e0e0e0;
+        }
+
+        .register-container {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 480px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.4rem;
+            background: linear-gradient(90deg, #a1c4fd, #c2e9fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #b0c4de;
+            font-size: 1.05rem;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 28px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px 14px 48px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.06);
+            color: white;
+            font-size: 1.05rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #7f9cf5;
+            box-shadow: 0 0 0 4px rgba(127, 156, 245, 0.18);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .form-group label {
+            position: absolute;
+            left: 48px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0c4de;
+            pointer-events: none;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+
+        .form-group input:focus + label,
+        .form-group input:not(:placeholder-shown) + label {
+            top: -10px;
+            left: 16px;
+            font-size: 0.85rem;
+            color: #7f9cf5;
+            background: rgba(15, 32, 39, 0.9);
+            padding: 0 8px;
+        }
+
+        .icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0c4de;
+            font-size: 1.3rem;
+            pointer-events: none;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b0c4de;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: 6px;
+            min-height: 20px;
+        }
+
+        .success-message {
+            color: #51cf66;
+            font-size: 0.9rem;
+            margin-top: 6px;
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            font-size: 1.15rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.35);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.5);
+        }
+
+        button[type="submit"]:disabled {
+            background: #4a4a6a;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 30px;
+            color: #b0c4de;
+        }
+
+        .login-link a {
+            color: #a1c4fd;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .register-container {
+                padding: 40px 25px;
+            }
+            .header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="register-container">
+        <div class="header">
+            <h1>Create Account</h1>
+            <p>Join our Solar Panel Monitoring System</p>
+        </div>
+
+        <form id="registerForm" method="POST" action="/register">
+            <!-- Username -->
+            <div class="form-group">
+                <i class="fas fa-user icon"></i>
+                <input type="text" id="username" name="username" placeholder=" " required autocomplete="username">
+                <label for="username">Username</label>
+                <div class="error-message" id="usernameError"></div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+                <i class="fas fa-envelope icon"></i>
+                <input type="email" id="email" name="email" placeholder=" " required autocomplete="email">
+                <label for="email">Email Address</label>
+                <div class="error-message" id="emailError"></div>
+            </div>
+
+            <!-- Password -->
+            <div class="form-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="password" name="password" placeholder=" " required autocomplete="new-password">
+                <label for="password">Password</label>
+                <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                <div class="error-message" id="passwordError"></div>
+            </div>
+
+            <!-- Confirm Password -->
+            <div class="form-group">
+                <i class="fas fa-lock icon"></i>
+                <input type="password" id="confirmPassword" name="confirm_password" placeholder=" " required>
+                <label for="confirmPassword">Confirm Password</label>
+                <div class="error-message" id="confirmError"></div>
+            </div>
+
+            <button type="submit" id="submitBtn" disabled>Register</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="/login">Login here</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+
+        const usernameError = document.getElementById('usernameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+        const confirmError = document.getElementById('confirmError');
+
+        // Toggle password visibility
+        document.getElementById('togglePassword').addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye');
+            this.classList.toggle('fa-eye-slash');
+        });
+
+        // Real-time validation
+        function validateForm() {
+            let isValid = true;
+
+            // Username
+            const usernameVal = username.value.trim();
+            if (usernameVal.length < 4) {
+                usernameError.textContent = "Username must be at least 4 characters";
+                isValid = false;
+            } else if (!/^[a-zA-Z0-9_]+$/.test(usernameVal)) {
+                usernameError.textContent = "Only letters, numbers, and underscore allowed";
+                isValid = false;
+            } else {
+                usernameError.textContent = "";
+            }
+
+            // Email
+            const emailVal = email.value.trim();
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailVal)) {
+                emailError.textContent = "Please enter a valid email";
+                isValid = false;
+            } else {
+                emailError.textContent = "";
+            }
+
+            // Password
+            const passVal = password.value;
+            if (passVal.length < 8) {
+                passwordError.textContent = "Password must be at least 8 characters";
+                isValid = false;
+            } else if (!/[A-Z]/.test(passVal)) {
+                passwordError.textContent = "Must contain at least one uppercase letter";
+                isValid = false;
+            } else if (!/[a-z]/.test(passVal)) {
+                passwordError.textContent = "Must contain at least one lowercase letter";
+                isValid = false;
+            } else if (!/[0-9]/.test(passVal)) {
+                passwordError.textContent = "Must contain at least one number";
+                isValid = false;
+            } else if (!/[!@#$%^&*(),.?":{}|<>]/.test(passVal)) {
+                passwordError.textContent = "Must contain at least one special character";
+                isValid = false;
+            } else {
+                passwordError.textContent = "";
+            }
+
+            // Confirm Password
+            if (confirmPassword.value !== password.value) {
+                confirmError.textContent = "Passwords do not match";
+                isValid = false;
+            } else {
+                confirmError.textContent = "";
+            }
+
+            submitBtn.disabled = !isValid;
+            return isValid;
+        }
+
+        // Listen to all inputs
+        [username, email, password, confirmPassword].forEach(input => {
+            input.addEventListener('input', validateForm);
+        });
+
+        // Final check on submit
+        form.addEventListener('submit', (e) => {
+            if (!validateForm()) {
+                e.preventDefault();
+            }
+        });
+
+        // Initial check
+        validateForm();
+    </script>
+
+</body>
+</html>
